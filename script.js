@@ -111,3 +111,36 @@ function saveData() {
     updateSliderVal('estres');
     toggleSymptomDetails();
 }
+function renderLogs() {
+    const history = JSON.parse(localStorage.getItem('moodHistory') || '[]');
+    const logsDiv = document.getElementById('logs');
+    logsDiv.innerHTML = "";
+
+    if (history.length === 0) return;
+
+    // Botón para copiar el JSON estructurado
+    const copyBtn = document.createElement('button');
+    copyBtn.innerText = "📋 Copiar Logs para Gemini";
+    copyBtn.style.margin = "20px 0";
+    copyBtn.onclick = () => {
+        navigator.clipboard.writeText(JSON.stringify(history, null, 2));
+        alert("Copiado al portapapeles");
+    };
+    logsDiv.appendChild(copyBtn);
+
+    // Renderizado visual de los logs
+    history.reverse().forEach(log => {
+        const div = document.createElement('div');
+        div.style.cssText = "background:white; padding:10px; border-radius:8px; margin-bottom:10px; border-left:4px solid #007aff;";
+        div.innerHTML = `
+            <strong>${log.fecha}</strong><br>
+            Consumo: ${log.tipoConsumo} (${log.intensidad})<br>
+            Historia: ${log.historia.premisa.substring(0, 30)}...<br>
+            PVC: ${log.historia.ratingYo} / ${log.historia.ratingOtroValor} (${log.historia.ratingOtroNombre})
+        `;
+        logsDiv.appendChild(div);
+    });
+}
+
+// Llama a renderLogs() al final de saveData() y al cargar la página
+window.onload = renderLogs;
