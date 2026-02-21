@@ -43,24 +43,252 @@
             border-radius: 8px;
             font-weight: bold;
         }
+
+        .hidden {
+            display: none;
+        }
+
+        .checkpoint-label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .intensity-group {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .intensity-option {
+            flex: 1;
+            text-align: center;
+        }
+
+        .intensity-option input {
+            display: none;
+        }
+
+        .intensity-option label {
+            display: block;
+            padding: 10px;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.8em;
+            transition: all 0.2s;
+            margin: 0;
+        }
+
+        .intensity-option input:checked+label.verde {
+            background: #4cd964;
+            border-color: #4cd964;
+            color: white;
+        }
+
+        .intensity-option input:checked+label.amarillo {
+            background: #ffcc00;
+            border-color: #ffcc00;
+            color: white;
+        }
+
+        .intensity-option input:checked+label.rojo {
+            background: #ff3b30;
+            border-color: #ff3b30;
+            color: white;
+        }
+
+        label.verde {
+            color: #4cd964;
+            border-color: #4cd964;
+        }
+
+        label.amarillo {
+            color: #ffcc00;
+            border-color: #ffcc00;
+        }
+
+        label.rojo {
+            color: #ff3b30;
+            border-color: #ff3b30;
+        }
+
+        .symptoms-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5px;
+            margin: 10px 0;
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .symptom-item {
+            display: flex;
+            align-items: center;
+            font-size: 0.85em;
+        }
+
+        .symptom-item input {
+            width: auto;
+            margin-right: 8px;
+        }
+
+        .detail-card {
+            margin-top: 10px;
+            padding: 10px;
+            border-left: 4px solid #007aff;
+            background: #f0f7ff;
+            border-radius: 4px;
+        }
+
+        .slider-container {
+            margin: 10px 0;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        .sub-options {
+            display: flex;
+            gap: 15px;
+            margin-top: 5px;
+        }
     </style>
 </head>
 
 <body>
     <h2>Log de Sistema (v1.0)</h2>
     <div class="card">
-        <label>Vaper (Fricción)</label>
-        <select id="vaper">
-            <option value="verde">Verde (Normal)</option>
-            <option value="amarillo">Amarillo (Pico de ansiedad)</option>
-            <option value="rojo">Rojo (Cable a tierra constante)</option>
+        <label>Tipo de Consumo</label>
+        <select id="consumo-tipo" onchange="toggleConsumoFields()">
+            <option value="nada">Nada</option>
+            <option value="vaper">Vaper</option>
+            <option value="cigarrillos">Cigarrillos</option>
+            <option value="custom">Custom</option>
         </select>
 
-        <label>Digestión / Piel</label>
-        <input type="text" id="somatizacion" placeholder="¿Cómo te sentís físicamente?">
+        <div id="intensidad-container" class="hidden">
+            <label class="checkpoint-label">Intensidad</label>
+            <div class="intensity-group">
+                <div class="intensity-option">
+                    <input type="radio" name="intensidad" id="int-verde" value="verde">
+                    <label for="int-verde" class="verde">Verde</label>
+                </div>
+                <div class="intensity-option">
+                    <input type="radio" name="intensidad" id="int-amarillo" value="amarillo">
+                    <label for="int-amarillo" class="amarillo">Amarillo</label>
+                </div>
+                <div class="intensity-option">
+                    <input type="radio" name="intensidad" id="int-rojo" value="rojo">
+                    <label for="int-rojo" class="rojo">Rojo</label>
+                </div>
+            </div>
+        </div>
 
-        <label>Idea para el Cómic</label>
+        <div id="cantidad-container" class="hidden">
+            <label class="checkpoint-label">Cantidad</label>
+            <input type="number" id="cantidad" placeholder="Ingresa un valor numérico" min="0">
+        </div>
+
+        <label class="checkpoint-label">Síntomas Activos</label>
+        <div class="symptoms-grid">
+            <div class="symptom-item">
+                <input type="checkbox" id="symp-palpitaciones" onchange="toggleSymptomDetails()">
+                <label for="symp-palpitaciones">Palpitaciones</label>
+            </div>
+            <div class="symptom-item">
+                <input type="checkbox" id="symp-cansancio" onchange="toggleSymptomDetails()">
+                <label for="symp-cansancio">Cansancio</label>
+            </div>
+            <div class="symptom-item">
+                <input type="checkbox" id="symp-estres" onchange="toggleSymptomDetails()">
+                <label for="symp-estres">Estrés</label>
+            </div>
+            <div class="symptom-item">
+                <input type="checkbox" id="symp-estomago" onchange="toggleSymptomDetails()">
+                <label for="symp-estomago">Malestar Estom.</label>
+            </div>
+            <div class="symptom-item">
+                <input type="checkbox" id="symp-derma" onchange="toggleSymptomDetails()">
+                <label for="symp-derma">Dermatilomanía</label>
+            </div>
+            <div class="symptom-item">
+                <input type="checkbox" id="symp-reflector" value="true">
+                <label for="symp-reflector">Efecto Reflector</label>
+            </div>
+        </div>
+
+        <label class="checkpoint-label">Horas de Sueño</label>
+        <input type="number" id="sueno" placeholder="Ej: 7.5" step="0.5" min="0" max="24">
+
+        <div id="details-container">
+            <div id="detail-cansancio" class="detail-card hidden">
+                <div class="slider-header">
+                    <span>Nivel de Cansancio</span>
+                    <span id="val-cansancio">5</span>
+                </div>
+                <input type="range" id="input-cansancio" min="1" max="10" value="5"
+                    oninput="updateSliderVal('cansancio')">
+            </div>
+
+            <div id="detail-estres" class="detail-card hidden">
+                <div class="slider-header">
+                    <span>Nivel de Estrés</span>
+                    <span id="val-estres">5</span>
+                </div>
+                <input type="range" id="input-estres" min="1" max="10" value="5" oninput="updateSliderVal('estres')">
+            </div>
+
+            <div id="detail-derma" class="detail-card hidden">
+                <label style="font-size: 0.9em; font-weight: bold;">Víctima de Dermatilomanía:</label>
+                <div class="sub-options">
+                    <div class="symptom-item">
+                        <input type="checkbox" name="derma-target" id="derma-unas" value="Uñas">
+                        <label for="derma-unas">Uñas</label>
+                    </div>
+                    <div class="symptom-item">
+                        <input type="checkbox" name="derma-target" id="derma-granos" value="Granos">
+                        <label for="derma-granos">Granos</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <label class="checkpoint-label">Idea para una Historia</label>
         <textarea id="idea" rows="3" placeholder="Escribe la premisa de hoy..."></textarea>
+
+        <div class="slider-container">
+            <div class="slider-header">
+                <span>Yo</span>
+                <span id="desc-rating1" style="font-style: italic; color: #666;">Regular (5)</span>
+            </div>
+            <input type="range" id="rating1" min="1" max="10" value="5" oninput="updateStoryRating('1')">
+        </div>
+
+        <div class="slider-container">
+            <div class="slider-header">
+                <input type="text" id="rating2-name" placeholder="Nombre"
+                    style="width: 60%; margin: 0; padding: 4px; font-size: 0.9em;">
+                <span id="desc-rating2" style="font-style: italic; color: #666;">Regular (5)</span>
+            </div>
+            <input type="range" id="rating2" min="1" max="10" value="5" oninput="updateStoryRating('2')">
+        </div>
+
+        <div style="font-size: 0.7em; color: #888; display: flex; justify-content: space-between; margin-bottom: 15px;">
+            <span>1: Mediocre</span>
+            <span>3: Aceptable</span>
+            <span>5: Regular</span>
+            <span>7: Muy Buena</span>
+            <span>10: Excelente</span>
+        </div>
 
         <button onclick="saveData()">Guardar Log</button>
     </div>
