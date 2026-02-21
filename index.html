@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>MoodLog MVP</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <style>
+        body {
+            font-family: -apple-system, sans-serif;
+            padding: 20px;
+            background: #f4f4f9;
+        }
+
+        .card {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+        }
+
+        select,
+        input,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background: #007aff;
+            color: white;
+            border: none;
+            padding: 15px;
+            width: 100%;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Log de Sistema (v1.0)</h2>
+    <div class="card">
+        <label>Vaper (Fricción)</label>
+        <select id="vaper">
+            <option value="verde">Verde (Normal)</option>
+            <option value="amarillo">Amarillo (Pico de ansiedad)</option>
+            <option value="rojo">Rojo (Cable a tierra constante)</option>
+        </select>
+
+        <label>Digestión / Piel</label>
+        <input type="text" id="somatizacion" placeholder="¿Cómo te sentís físicamente?">
+
+        <label>Idea para el Cómic</label>
+        <textarea id="idea" rows="3" placeholder="Escribe la premisa de hoy..."></textarea>
+
+        <button onclick="saveData()">Guardar Log</button>
+    </div>
+
+    <div id="logs" style="font-size: 0.8em; color: #666;"></div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
